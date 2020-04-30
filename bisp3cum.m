@@ -339,36 +339,36 @@ time=num2str(toc);
 
 % %	plot mean signal
 % 
-% meansig=mean(signal,2);
-% realsig=isreal(meansig);
+meansig=mean(signal,2);
+realsig=isreal(meansig);
 % subplot 221
 % if realsig
 %    plot((0:sample1)/samprate,meansig)
 % else
 %    plot((0:sample1)/samprate,abs(meansig))
 % end
-% fontsize='\fontsize{8}';
-% seconds='(\its \rm)';
+fontsize='\fontsize{8}';
+seconds='(\its \rm)';
 % title([fontsize 'Averaged Signal'])
 % xlabel([fontsize 'Time ' seconds])
 % ylabel([fontsize 'Signal (\itV \rm)'])
 % grid
 % clear meansig
 
-% %	plot 3rd order cumulant
-% 
+%	plot 3rd order cumulant
+
 % subplot 222
-% if realsig
-%    imagesc(lag,lag,cum)
-% else
-%    imagesc(lag,lag,abs(cum))
-% end
-% title([fontsize '3^{rd} Order Cumulant (\itV \rm^{3} )'])
-% xlabel([fontsize 'Lag \tau_{0} ' seconds])
-% ylabel([fontsize 'Lag \tau_{1} ' seconds])
-% axis xy
-% grid
-% colorbar
+if realsig
+   imagesc(lag,lag,cum)
+else
+   imagesc(lag,lag,abs(cum))
+end
+title([fontsize '3^{rd} Order Cumulant (\itV \rm^{3} )'])
+xlabel([fontsize 'Lag \tau_{0} ' seconds])
+ylabel([fontsize 'Lag \tau_{1} ' seconds])
+axis xy
+grid
+colorbar
 
 %	plot bispectrum
 % 

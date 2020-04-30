@@ -1,3 +1,7 @@
+%%% Advanced Signal Proccessing Techniques - Exercise 3 - 2020
+%%% Author: Kitsios Konstantinos 9182
+%%% Validation of Giannakis' formula
+
 N = 2048;
 q = 5;
 b = [1 0.93 0.85 0.72 0.59 -0.1];

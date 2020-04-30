@@ -1,0 +1,1181 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement !h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Advanced Signal Proccessing Techinques-Exercise 3
+\end_layout
+
+\begin_layout Author
+Kitsios Konstantinos
+\end_layout
+
+\begin_layout Standard
+In this 3rd assignment we will confirm the validity of Giannakis' formula
+ using MATLAB.
+ This formula provides a way to calculate the transfer function of a MA
+ system if the order of the system 
+\begin_inset Formula $q$
+\end_inset
+
+ is known a priori.
+ We will use a MA system of order 
+\begin_inset Formula $q=5$
+\end_inset
+
+ .Initially, we will create the 2 signals:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $v[k]:$
+\end_inset
+
+ a random signal from exponential distribution with length 
+\begin_inset Formula $N=2048$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $x[k]$
+\end_inset
+
+: the output of the MA system with coefficients 
+\begin_inset Formula $[1.0\,0.93\,0.85\,0.72\,0.59\,-0.1]$
+\end_inset
+
+ when the input is 
+\begin_inset Formula $v[k]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+MATLAB code was written for the validations of the experiments below.
+ The full code exists both at the .zip file and at the end of this document.
+ The validation of the formula will take place according to the following
+ steps
+\end_layout
+
+\begin_layout Enumerate
+First, we will validate the non-Gaussian nature of 
+\begin_inset Formula $v[k]$
+\end_inset
+
+.
+ As we stated above, it comes from an exponential distribution which makes
+ it non-Gaussian.
+ Therefore, 
+\emph on
+the skewness
+\emph default
+ must be non zero.
+ The value we calculated from MATLAB is 
+\begin_inset Formula $2.006777$
+\end_inset
+
+ which is significantly different than zero.
+\end_layout
+
+\begin_layout Enumerate
+In the second step, we will calculate and plot the third order cumulants
+ of 
+\begin_inset Formula $x[k]$
+\end_inset
+
+ at the interval 
+\begin_inset Formula $\left(-τ_{1}:0:τ_{1}\right)=\left(-τ_{2}:0:τ_{2}\right)=\left(-20:0:20\right)$
+\end_inset
+
+using the indirect methold.
+ The library 
+\emph on
+bispec3cum.m 
+\emph default
+from the MATLAB file exchange was used for the calculations.
+ The generated plot can be seen in figure 1 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 0.jpg
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Next, having calculated the 3rd order cumulant, we will apply Giannakis'
+ formula in order to compute the MA system transfer function 
+\begin_inset Formula 
+\[
+\hat{h}[k]=\frac{c_{3}^{x}\left(q,k\right)}{c_{3}^{x}\left(q,0\right)},k=0,1,...,q
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\hat{h}[k]=0,k>q
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+As we stated at the begining, in order for the formula to be applied we
+ must know the order 
+\begin_inset Formula $q$
+\end_inset
+
+ of the MA system.
+ This is not always the case so in this step we will assume that we miscalculate
+d the order 
+\begin_inset Formula $q$
+\end_inset
+
+.
+ We will examine two cases: 
+\begin_inset Formula $q_{sub}=q-2=3$
+\end_inset
+
+ and 
+\begin_inset Formula $q_{sup}=q+3=8$
+\end_inset
+
+.
+ For each case, we computed with Giannakis' formula the impulse responses
+ 
+\begin_inset Formula $\hat{h}_{sub}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{h}_{sup}$
+\end_inset
+
+.
+ The comparison versus the actual 
+\begin_inset Formula $q$
+\end_inset
+
+ will take place in next steps.
+\end_layout
+
+\begin_layout Enumerate
+In this step, we will estimate the output of the MA system 
+\begin_inset Formula $x_{est}$
+\end_inset
+
+ using the impulse response from Giannakis' formula.
+ As a measure of similarity with the original one, we will calculate the
+ NRMSE value between 
+\begin_inset Formula $x_{est}$
+\end_inset
+
+ and 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ This value was found with MATLAB to be 
+\begin_inset Formula $NRMSE=0.151344$
+\end_inset
+
+.
+ We see that it is a relatively low value(much closer to 0 than to 1) so
+ we could deduce that the approximation of the impulse response with Giannakis'
+ formula works well if we know the order 
+\begin_inset Formula $q$
+\end_inset
+
+ and if we have no noise at the output.
+ The plot of 
+\begin_inset Formula $x_{est}$
+\end_inset
+
+ and 
+\begin_inset Formula $x$
+\end_inset
+
+ is shown at figure 2.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 1.jpg
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Here, we will repeat the proccess of 5.
+ but using 
+\begin_inset Formula $\hat{h}_{sub}$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{h}_{sup}$
+\end_inset
+
+ as impulse responses.
+ The NRMSE for the 2 cases is 
+\begin_inset Formula $NRMSE_{sub}=0.129251$
+\end_inset
+
+ and 
+\begin_inset Formula $NRMSE_{sup}=1.697673$
+\end_inset
+
+.
+ Here we see something interesting: 
+\begin_inset Formula $NRMSE_{sub}$
+\end_inset
+
+is better than 
+\begin_inset Formula $NRMSE$
+\end_inset
+
+ from the original impulse function.
+ This means that Giannakis' formula performs slightly better if we pass
+ as a parameter the order 
+\begin_inset Formula $q=3$
+\end_inset
+
+ while the actual MA system has 
+\begin_inset Formula $q=5$
+\end_inset
+
+.
+ This could be happening because the formula works better with systems with
+ lower order maybe.
+ That would also explain the unordinarily high 
+\begin_inset Formula $NRMSE_{sup}$
+\end_inset
+
+ which is greater than one, meaning that the prediction is totally wrong.
+ This is obvious from the plots below where 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $x_{sup}$
+\end_inset
+
+ are totally different signals.
+ Figure 3 shows 
+\begin_inset Formula $x\,vs\,x_{sub}$
+\end_inset
+
+ and Figure 4 shows 
+\begin_inset Formula $x\,vs\,x_{sup}$
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 2.jpg
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3.jpg
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Finally, we will examine how the formula works if we add noise to the signal
+ output.
+ To achieve this, we will not plug into the formula the time series 
+\begin_inset Formula $x[k]$
+\end_inset
+
+ but the contaminated with noise 
+\begin_inset Formula $y_{i}[k]=x[k]+n_{i}[k],\,i=1,2,...,8.$
+\end_inset
+
+ Each 
+\begin_inset Formula $n_{i}$
+\end_inset
+
+ is a white Gaussian noise such as the SNR will be 
+\begin_inset Formula $\left[30,25,20,15,10,5,0,-5\right]dB$
+\end_inset
+
+ for the corresponding 
+\begin_inset Formula $i=1,...,8$
+\end_inset
+
+.
+ The NRMSE for each 
+\begin_inset Formula $i$
+\end_inset
+
+ is computed and saved at a vector to be plotted against the corresponding
+ SNR values.
+ The plot can be seen below at Figure 5.
+ It is obvious that for high values of SNR(
+\begin_inset Formula $[10-30]$
+\end_inset
+
+) the NRMSE is not affected very much.
+ This means that Giannakis' formula has an important stability regarding
+ noise and can be used in noisy environments if the noise stays into legit
+ levels.
+ Of course when the SNR becomes smaller the accuracy of the formula also
+ decreases and for 
+\begin_inset Formula $SNR=-5$
+\end_inset
+
+(i.e noise contributes more than the acutal signal) we see that 
+\begin_inset Formula $NRMSE>2.5$
+\end_inset
+
+ which is a really bad prediction.
+ Even for 
+\begin_inset Formula $SNR=0$
+\end_inset
+
+ (i.e.
+ noise contributes equal with the actual signal) we see that 
+\begin_inset Formula $NRMSE\sim1$
+\end_inset
+
+ which also indicates poor performance.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 4.jpg
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Discussion
+\end_layout
+
+\begin_layout Standard
+With the above analysis we confirmed Giannakis' formula using MATLAB code.
+ The formula provides a method to calculate the impulse response of a MA
+ system of order q using the 3rd order cumulants of a time series produced
+ by the system.
+ We've seen that the formula works well in noise-free environments when
+ the order 
+\begin_inset Formula $q$
+\end_inset
+
+ of the MA system known a priori.
+ This is indicated by the 
+\begin_inset Formula $NRMSE$
+\end_inset
+
+ value of around 
+\begin_inset Formula $0.15$
+\end_inset
+
+ of the original signal versus the one predicted using the impulse response
+ from Giannakis' formula.
+\end_layout
+
+\begin_layout Standard
+What is also interesting is that when we do not know the order 
+\begin_inset Formula $q$
+\end_inset
+
+ and we miscalculated it for let's say 
+\begin_inset Formula $q_{sub}=q-2$
+\end_inset
+
+ , Giannakis' formula works surprisingly well, even better than the original
+ 
+\begin_inset Formula $q$
+\end_inset
+
+ value! On the other hand, when we miscalculate 
+\begin_inset Formula $q$
+\end_inset
+
+ as 
+\begin_inset Formula $q_{sup}=q+3$
+\end_inset
+
+ then the results are pretty dissapointing with the 
+\begin_inset Formula $NRMSE$
+\end_inset
+
+ value being around 
+\begin_inset Formula $1.6$
+\end_inset
+
+ .
+ This may be an indicator that the formula works better with low order systems.
+ Having that said, we can deduce that if not sure about the acutal order
+ of the system, lower predicted values should in general be preffered over
+ higher predicted values if no other indicator exists in favor of high order
+ values.
+ This may significantly improve performance
+\end_layout
+
+\begin_layout Standard
+Finally, we tested Giannakis' formula in a noisy environment with different
+ SNR values.
+ It is worth mentioning that the formula is robust to noise and produces
+ very good results when the SNR values are realtively high, i.e.
+ 
+\begin_inset Formula $SNR=30-10dB$
+\end_inset
+
+.
+ For 
+\begin_inset Formula $SNR=5dB$
+\end_inset
+
+ the calculations seem to get worse while for 
+\begin_inset Formula $SNR=0$
+\end_inset
+
+(same amount of signal as noise) the 
+\begin_inset Formula $NRMSE$
+\end_inset
+
+ value is near 1 which indicates a rather bad behaviour.
+ If we keep adding more noise the calculations keep getting even worse,
+ for example for 
+\begin_inset Formula $SNR=-5dB$
+\end_inset
+
+( more noise than signal) the 
+\begin_inset Formula $NRMSE$
+\end_inset
+
+ value explodes over 
+\begin_inset Formula $2.5$
+\end_inset
+
+.
+ However, the robustness of the formula when the noise is kept in relatively
+ low levels is remarkable.
+\end_layout
+
+\begin_layout Subsection*
+Code
+\end_layout
+
+\begin_layout Standard
+Below is the code for my main script 
+\emph on
+ex3.m
+\emph default
+.
+ The 
+\emph on
+bispec3cum.m 
+\emph default
+file I used for 3rd cumulant calculations from MATLAB file exchange site
+ is included in the 
+\emph on
+.zip
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+ex3.m
+\end_layout
+
+\begin_layout Standard
+%%% Advanced Signal Proccessing Techniques - Exercise 3 - 2020
+\end_layout
+
+\begin_layout Standard
+%%% Author: Kitsios Konstantinos 9182
+\end_layout
+
+\begin_layout Standard
+%%% Validation of Giannakis' formula
+\end_layout
+
+\begin_layout Standard
+N = 2048;
+\end_layout
+
+\begin_layout Standard
+q = 5;
+\end_layout
+
+\begin_layout Standard
+b = [1 0.93 0.85 0.72 0.59 -0.1];
+\end_layout
+
+\begin_layout Standard
+rng(0)
+\end_layout
+
+\begin_layout Standard
+v = exprnd(1, [1 N]);
+\end_layout
+
+\begin_layout Standard
+x = zeros(1, N);
+\end_layout
+
+\begin_layout Standard
+for i=1:N
+\end_layout
+
+\begin_layout Standard
+for j=1:q+1
+\end_layout
+
+\begin_layout Standard
+if i-j >= 1
+\end_layout
+
+\begin_layout Standard
+x(i) = x(i) + b(j)*v(i-j);
+\end_layout
+
+\begin_layout Standard
+end
+\end_layout
+
+\begin_layout Standard
+end
+\end_layout
+
+\begin_layout Standard
+end
+\end_layout
+
+\begin_layout Standard
+muX = mean(x);
+\end_layout
+
+\begin_layout Standard
+stdX = std(x);
+\end_layout
+
+\begin_layout Standard
+muV = mean(v);
+\end_layout
+
+\begin_layout Standard
+stdV = std(v);
+\end_layout
+
+\begin_layout Standard
+%% 1.
+ Estimage skewness
+\end_layout
+
+\begin_layout Standard
+gamma3V = sum((v-muV).^3)/((N-1)*stdV^3);
+\end_layout
+
+\begin_layout Standard
+fprintf("Skewness value is: %f which is different than zero so we deduce
+ that V[k] is not Gaussian
+\backslash
+n", gamma3V);
+\end_layout
+
+\begin_layout Standard
+%% 2.
+ 3rd order cumulant
+\end_layout
+
+\begin_layout Standard
+L3 = 20; % number of lags
+\end_layout
+
+\begin_layout Standard
+% window=0 uses the parzen window
+\end_layout
+
+\begin_layout Standard
+figure(1)
+\end_layout
+
+\begin_layout Standard
+[~, ~, cum, lag] = bisp3cum(x, 1, L3, 'none');
+\end_layout
+
+\begin_layout Standard
+%% 3.
+ Gianakis' formula for h[k]
+\end_layout
+
+\begin_layout Standard
+% Compute h_hat for 10 elements.
+ Only the q(=6) first will be nonzerosub
+\end_layout
+
+\begin_layout Standard
+% It could be any other size >=6 with the same results below
+\end_layout
+
+\begin_layout Standard
+h_hat = zeros(10, 1);
+\end_layout
+
+\begin_layout Standard
+for k=1:q+1
+\end_layout
+
+\begin_layout Standard
+h_hat(k) = cum(L3 + 1 + q, L3 + k)/cum(L3 + 1 + q, L3 + 1);
+\end_layout
+
+\begin_layout Standard
+end
+\end_layout
+
+\begin_layout Standard
+%% 4.
+ Sub-estimation & Sup-estimation
+\end_layout
+
+\begin_layout Standard
+q_sub = q-2;
+\end_layout
+
+\begin_layout Standard
+h_sub = zeros(10, 1);
+\end_layout
+
+\begin_layout Standard
+for k=1:q_sub
+\end_layout
+
+\begin_layout Standard
+h_sub(k) = cum(L3 + 1 + q_sub, L3 + k)/cum(L3 + 1 + q_sub, L3 + 1);
+\end_layout
+
+\begin_layout Standard
+end
+\end_layout
+
+\begin_layout Standard
+q_sup = q+3;
+\end_layout
+
+\begin_layout Standard
+h_sup = zeros(10, 1);
+\end_layout
+
+\begin_layout Standard
+for k=1:q_sup
+\end_layout
+
+\begin_layout Standard
+h_sup(k) = cum(L3 + 1 + q_sup, L3 + k)/cum(L3 + 1 +q_sup, L3 + 1);
+\end_layout
+
+\begin_layout Standard
+end
+\end_layout
+
+\begin_layout Standard
+%% 5.
+ Comparison between estimation and original
+\end_layout
+
+\begin_layout Standard
+x_est = conv(h_hat, v);
+\end_layout
+
+\begin_layout Standard
+x_est = x_est(1:N);
+\end_layout
+
+\begin_layout Standard
+figure(2);
+\end_layout
+
+\begin_layout Standard
+plot(x_est, 'r');
+\end_layout
+
+\begin_layout Standard
+hold on;
+\end_layout
+
+\begin_layout Standard
+plot(x, 'b')
+\end_layout
+
+\begin_layout Standard
+title('Real vs Estimated')
+\end_layout
+
+\begin_layout Standard
+xlabel('k')
+\end_layout
+
+\begin_layout Standard
+ylabel('x[k]')
+\end_layout
+
+\begin_layout Standard
+legend('estimated', 'real')
+\end_layout
+
+\begin_layout Standard
+rmse = sqrt( sum( (x_est - x).^2 )/N );
+\end_layout
+
+\begin_layout Standard
+nrmse = rmse/(max(x) - min(x));
+\end_layout
+
+\begin_layout Standard
+fprintf("NRMSE: %f
+\backslash
+n", nrmse);
+\end_layout
+
+\begin_layout Standard
+%% 6.
+ Comparison with sub-estimation and sup-estimation
+\end_layout
+
+\begin_layout Standard
+x_est_sub = conv(h_sub, v);
+\end_layout
+
+\begin_layout Standard
+x_est_sub = x_est_sub(1:N);
+\end_layout
+
+\begin_layout Standard
+figure(3);
+\end_layout
+
+\begin_layout Standard
+plot(x_est_sub, 'r');
+\end_layout
+
+\begin_layout Standard
+hold on;
+\end_layout
+
+\begin_layout Standard
+plot(x, 'b');
+\end_layout
+
+\begin_layout Standard
+title('Real vs Estimated with qsub=q-2')
+\end_layout
+
+\begin_layout Standard
+xlabel('k')
+\end_layout
+
+\begin_layout Standard
+ylabel('x[k]')
+\end_layout
+
+\begin_layout Standard
+legend('estimated', 'real')
+\end_layout
+
+\begin_layout Standard
+rmse = sqrt( sum( (x_est_sub - x).^2 )/N );
+\end_layout
+
+\begin_layout Standard
+nrmse = rmse/(max(x) - min(x));
+\end_layout
+
+\begin_layout Standard
+fprintf("NRMSE for sub-estimation with qsub=q-2: %f
+\backslash
+n", nrmse);
+\end_layout
+
+\begin_layout Standard
+x_est_sup = conv(h_sup, v);
+\end_layout
+
+\begin_layout Standard
+x_est_sup = x_est_sup(1:N);
+\end_layout
+
+\begin_layout Standard
+figure(4);
+\end_layout
+
+\begin_layout Standard
+plot(x_est_sup, 'r');
+\end_layout
+
+\begin_layout Standard
+hold on;
+\end_layout
+
+\begin_layout Standard
+plot(x, 'b');
+\end_layout
+
+\begin_layout Standard
+title('Real vs Estimated with qsup=q+3')
+\end_layout
+
+\begin_layout Standard
+xlabel('k')
+\end_layout
+
+\begin_layout Standard
+ylabel('x[k]')
+\end_layout
+
+\begin_layout Standard
+legend('estimated', 'real')
+\end_layout
+
+\begin_layout Standard
+rmse = sqrt( sum( (x_est_sup - x).^2 )/N );
+\end_layout
+
+\begin_layout Standard
+nrmse = rmse/(max(x) - min(x));
+\end_layout
+
+\begin_layout Standard
+fprintf("NRMSE for sup-estimation with qsup=q+3: %f
+\backslash
+n", nrmse);
+\end_layout
+
+\begin_layout Standard
+%% 7.
+ SNR variations
+\end_layout
+
+\begin_layout Standard
+NN = 8; % Number of SNR values to try
+\end_layout
+
+\begin_layout Standard
+nrmseV = zeros(NN, 1); % Vector to hold NRMSE for each SNR value
+\end_layout
+
+\begin_layout Standard
+snrV = 30:-5:-5; % Victor of SNR values
+\end_layout
+
+\begin_layout Standard
+for i=1:NN
+\end_layout
+
+\begin_layout Standard
+y = awgn(x, snrV(i), 'measured');
+\end_layout
+
+\begin_layout Standard
+% 7.2.
+ 3rd order cumulant
+\end_layout
+
+\begin_layout Standard
+L3 = 20; % number of lags
+\end_layout
+
+\begin_layout Standard
+% window=0 uses the parzen window
+\end_layout
+
+\begin_layout Standard
+[~, ~, cumSNR, lagSNR] = bisp3cum(y, 1, L3, 'none');
+\end_layout
+
+\begin_layout Standard
+% 7.3.
+ Gianakis' formula for h[k]
+\end_layout
+
+\begin_layout Standard
+% Compute h_hat for 10 elements.
+ Only the q(=6) first will be nonzerosub
+\end_layout
+
+\begin_layout Standard
+% It could be any other size >=6 with the same results below
+\end_layout
+
+\begin_layout Standard
+h_hat_snr = zeros(10, 1);
+\end_layout
+
+\begin_layout Standard
+for k=1:q+1
+\end_layout
+
+\begin_layout Standard
+h_hat_snr(k) = cumSNR(L3 + 1 + q, L3 + k)/cumSNR(L3 + 1 + q, L3 + 1);
+\end_layout
+
+\begin_layout Standard
+end
+\end_layout
+
+\begin_layout Standard
+x_est_snr = conv(h_hat_snr, v);
+\end_layout
+
+\begin_layout Standard
+x_est_snr = x_est_snr(1:N);
+\end_layout
+
+\begin_layout Standard
+rmse = sqrt( sum( (x_est_snr - x).^2 )/N );
+\end_layout
+
+\begin_layout Standard
+nrmse = rmse/(max(x) - min(x));
+\end_layout
+
+\begin_layout Standard
+nrmseV(i) = nrmse;
+\end_layout
+
+\begin_layout Standard
+end
+\end_layout
+
+\begin_layout Standard
+figure(5)
+\end_layout
+
+\begin_layout Standard
+plot(snrV, nrmseV)
+\end_layout
+
+\begin_layout Standard
+xlabel('SNR (dB)')
+\end_layout
+
+\begin_layout Standard
+ylabel('NRMSE')
+\end_layout
+
+\end_body
+\end_document
