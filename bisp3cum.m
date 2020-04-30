@@ -40,7 +40,7 @@ function [bisp,freq,cum,lag]=bisp3cum(signal,samprate,maxlag,window,scale)
 %
 %	Example:
 %
-%	» [b,f,c,l]=bisp3cum([1-i -1+i],1,1)
+%	ï¿½ [b,f,c,l]=bisp3cum([1-i -1+i],1,1)
 %
 %	b =
 %
@@ -269,7 +269,7 @@ for k=1:record
 %	compute cumulant
    
    cum=cum+toepsig.*trflsig(onesmaxlag211,:)*toepsig.';
-   disp(['record ' num2str(k) ':  time = ' num2str(cputime-time) ' seconds'])
+%    disp(['record ' num2str(k) ':  time = ' num2str(cputime-time) ' seconds'])
 end
 cum=cum/record;
 clear samp1ind samlsamind ml1samind zerosmaxlag1 sig trflsig toepsig
@@ -298,8 +298,8 @@ else
    clear scalmat maxlag1ind
 end
 time=num2str(toc);
-disp(' ')
-disp([strmaxlag21 ' x ' strmaxlag21 ' element cumulant computed in ' time ' seconds'])
+% disp(' ')
+% disp([strmaxlag21 ' x ' strmaxlag21 ' element cumulant computed in ' time ' seconds'])
 
 %	generate lag window function
 
@@ -331,64 +331,64 @@ clear ml211ind zeros1maxlag onesmaxlag211
 tic
 bisp=fftshift(fft2(ifftshift(cum.*wind)));
 time=num2str(toc);
-disp(' ')
-disp([strmaxlag21 ' x ' strmaxlag21 ' element bispectrum computed in ' time...
-      ' seconds'])
-disp(' ')
-clear wind
+% disp(' ')
+% disp([strmaxlag21 ' x ' strmaxlag21 ' element bispectrum computed in ' time...
+%       ' seconds'])
+% disp(' ')
+% clear wind
 
-%	plot mean signal
+% %	plot mean signal
+% 
+% meansig=mean(signal,2);
+% realsig=isreal(meansig);
+% subplot 221
+% if realsig
+%    plot((0:sample1)/samprate,meansig)
+% else
+%    plot((0:sample1)/samprate,abs(meansig))
+% end
+% fontsize='\fontsize{8}';
+% seconds='(\its \rm)';
+% title([fontsize 'Averaged Signal'])
+% xlabel([fontsize 'Time ' seconds])
+% ylabel([fontsize 'Signal (\itV \rm)'])
+% grid
+% clear meansig
 
-meansig=mean(signal,2);
-realsig=isreal(meansig);
-subplot 221
-if realsig
-   plot((0:sample1)/samprate,meansig)
-else
-   plot((0:sample1)/samprate,abs(meansig))
-end
-fontsize='\fontsize{8}';
-seconds='(\its \rm)';
-title([fontsize 'Averaged Signal'])
-xlabel([fontsize 'Time ' seconds])
-ylabel([fontsize 'Signal (\itV \rm)'])
-grid
-clear meansig
-
-%	plot 3rd order cumulant
-
-subplot 222
-if realsig
-   imagesc(lag,lag,cum)
-else
-   imagesc(lag,lag,abs(cum))
-end
-title([fontsize '3^{rd} Order Cumulant (\itV \rm^{3} )'])
-xlabel([fontsize 'Lag \tau_{0} ' seconds])
-ylabel([fontsize 'Lag \tau_{1} ' seconds])
-axis xy
-grid
-colorbar
+% %	plot 3rd order cumulant
+% 
+% subplot 222
+% if realsig
+%    imagesc(lag,lag,cum)
+% else
+%    imagesc(lag,lag,abs(cum))
+% end
+% title([fontsize '3^{rd} Order Cumulant (\itV \rm^{3} )'])
+% xlabel([fontsize 'Lag \tau_{0} ' seconds])
+% ylabel([fontsize 'Lag \tau_{1} ' seconds])
+% axis xy
+% grid
+% colorbar
 
 %	plot bispectrum
-
-subplot 223
-imagesc(freq,freq,abs(bisp))
-title([fontsize 'Bispectrum Magnitude (\itV \rm^{3}/\itHz \rm^{2} )'])
-hertz='(\itHz \rm)';
-fxlabel=[fontsize 'Frequency f_{0} ' hertz];
-xlabel(fxlabel)
-fylabel=[fontsize 'Frequency f_{1} ' hertz];
-ylabel(fylabel)
-axis xy
-grid
-colorbar
-subplot 224
-imagesc(freq,freq,angle(bisp)*180/pi)
-title([fontsize 'Bispectrum Phase (\itdeg \rm)'])
-xlabel(fxlabel)
-ylabel(fylabel)
-axis xy
-grid
-colorbar
-colormap gray
+% 
+% subplot 223
+% imagesc(freq,freq,abs(bisp))
+% title([fontsize 'Bispectrum Magnitude (\itV \rm^{3}/\itHz \rm^{2} )'])
+% hertz='(\itHz \rm)';
+% fxlabel=[fontsize 'Frequency f_{0} ' hertz];
+% xlabel(fxlabel)
+% fylabel=[fontsize 'Frequency f_{1} ' hertz];
+% ylabel(fylabel)
+% axis xy
+% grid
+% colorbar
+% subplot 224
+% imagesc(freq,freq,angle(bisp)*180/pi)
+% title([fontsize 'Bispectrum Phase (\itdeg \rm)'])
+% xlabel(fxlabel)
+% ylabel(fylabel)
+% axis xy
+% grid
+% colorbar
+% colormap gray

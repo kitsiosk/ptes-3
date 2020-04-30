@@ -83,9 +83,9 @@ fprintf("NRMSE for sub-estimation with qsub=q-2: %f\n", nrmse);
 x_est_sup = conv(h_sup, v);
 x_est_sup = x_est_sup(1:N);
 figure(4);
-plot(x_est_sup(1:20), 'r');
+plot(x_est_sup, 'r');
 hold on;
-plot(x(1:20), 'b');
+plot(x, 'b');
 title('Real vs Estimated with qsup=q+3')
 xlabel('k')
 ylabel('x[k]')
@@ -93,3 +93,33 @@ legend('estimated', 'real')
 rmse = sqrt( sum( (x_est_sup - x).^2 )/N );
 nrmse = rmse/(max(x) - min(x));
 fprintf("NRMSE for sup-estimation with qsup=q+3: %f\n", nrmse);
+
+%% 7. SNR variations
+NN = 8;  % Number of SNR values to try
+nrmseV = zeros(NN, 1);   % Vector to hold NRMSE for each SNR value
+snrV = 30:-5:-5;         % Victor of SNR values
+
+for i=1:NN
+    y = awgn(x, snrV(i), 'measured');
+    % 7.2. 3rd order cumulant
+    L3 = 20;    % number of lags
+    % window=0 uses the parzen window
+    [~, ~, cumSNR, lagSNR] = bisp3cum(y, 1, L3, 'none');
+    % 7.3. Gianakis' formula for h[k]
+    % Compute h_hat for 10 elements. Only the q(=6) first will be nonzerosub
+    % It could be any other size >=6 with the same results below
+    h_hat_snr = zeros(10, 1);
+    for k=1:q+1
+        h_hat_snr(k) = cumSNR(L3 + 1 + q, L3 + k)/cumSNR(L3 + 1 + q, L3 + 1);
+    end
+    x_est_snr = conv(h_hat_snr, v);
+    x_est_snr = x_est_snr(1:N);
+    rmse = sqrt( sum( (x_est_snr - x).^2 )/N );
+    nrmse = rmse/(max(x) - min(x));
+    nrmseV(i) = nrmse;
+end
+
+figure(5)
+plot(snrV, nrmseV)
+xlabel('SNR (dB)')
+ylabel('NRMSE')
